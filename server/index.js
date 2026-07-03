@@ -10,6 +10,7 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_FILE = path.join(__dirname, 'data', 'brainrots.json');
+const CLIENT_DIST = path.join(__dirname, '..', 'dist');
 const PORT = process.env.PORT || 3001;
 const API_KEY = process.env.BRAINROT_API_KEY || 'change-this-secret-key';
 
@@ -111,6 +112,12 @@ app.post('/api/update-counts', requireApiKey, async (req, res) => {
   }
 });
 
+app.use(express.static(CLIENT_DIST));
+
+app.get('*', (_req, res) => {
+  res.sendFile(path.join(CLIENT_DIST, 'index.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`Brainrot API running on http://localhost:${PORT}`);
+  console.log(`Brainrot Exist Counts running on http://localhost:${PORT}`);
 });
