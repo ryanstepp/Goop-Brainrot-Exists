@@ -1,0 +1,73 @@
+{
+  "lastUpdated": "2026-07-03T22:46:31.666Z",
+  "brainrots": [
+    {
+      "name": "67",
+      "total": 1234,
+      "rarity": "Mythic",
+      "image": "",
+      "mutations": {
+        "Normal": 800,
+        "Gold": 120,
+        "Diamond": 40,
+        "Rainbow": 10,
+        "Galaxy": 4,
+        "Lava": 60,
+        "Candy": 90,
+        "Glitch": 50,
+        "Radioactive": 60
+      }
+    },
+    {
+      "name": "Goop Kid",
+      "total": 760,
+      "rarity": "Rare",
+      "image": "",
+      "mutations": {
+        "Normal": 520,
+        "Gold": 80,
+        "Diamond": 20,
+        "Rainbow": 5,
+        "Galaxy": 3,
+        "Lava": 42,
+        "Candy": 45,
+        "Glitch": 25,
+        "Radioactive": 20
+      }
+    },
+    {
+      "name": "Slime Lord",
+      "total": 315,
+      "rarity": "Legendary",
+      "image": "",
+      "mutations": {
+        "Normal": 190,
+        "Gold": 44,
+        "Diamond": 16,
+        "Rainbow": 6,
+        "Galaxy": 2,
+        "Lava": 21,
+        "Candy": 18,
+        "Glitch": 10,
+        "Radioactive": 8
+      }
+    },
+    {
+      "name": "Molded Nugget",
+      "total": 91,
+      "rarity": "Secret",
+      "image": "",
+      "mutations": {
+        "Normal": 42,
+        "Gold": 18,
+        "Diamond": 8,
+        "Rainbow": 4,
+        "Galaxy": 1,
+        "Lava": 7,
+        "Candy": 6,
+        "Glitch": 3,
+        "Radioactive": 2
+      }
+    }
+  ]
+}
