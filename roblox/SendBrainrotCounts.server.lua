@@ -25,13 +25,13 @@ local COUNT_VALUE_NAMES = {
 }
 
 local function getBrainrotsRoot()
-	return ServerStorage:FindFirstChild("Brainrots") or ReplicatedStorage:FindFirstChild("Brainrots")
+	return ReplicatedStorage:FindFirstChild("Brainrots") or ServerStorage:FindFirstChild("Brainrots")
 end
 
-local function getPositiveInteger(value)
+local function getNonNegativeInteger(value)
 	local numberValue = tonumber(value)
 
-	if numberValue and numberValue > 0 then
+	if numberValue and numberValue >= 0 then
 		return math.floor(numberValue)
 	end
 
@@ -40,7 +40,7 @@ end
 
 local function getCountFromAttributes(instance)
 	for _, attributeName in ipairs(COUNT_ATTRIBUTE_NAMES) do
-		local count = getPositiveInteger(instance:GetAttribute(attributeName))
+		local count = getNonNegativeInteger(instance:GetAttribute(attributeName))
 
 		if count then
 			return count
@@ -52,14 +52,14 @@ end
 
 local function getCountFromValueObject(instance)
 	if instance:IsA("IntValue") or instance:IsA("NumberValue") then
-		return getPositiveInteger(instance.Value)
+		return getNonNegativeInteger(instance.Value)
 	end
 
 	for _, valueName in ipairs(COUNT_VALUE_NAMES) do
 		local valueObject = instance:FindFirstChild(valueName)
 
 		if valueObject and (valueObject:IsA("IntValue") or valueObject:IsA("NumberValue")) then
-			local count = getPositiveInteger(valueObject.Value)
+			local count = getNonNegativeInteger(valueObject.Value)
 
 			if count then
 				return count
@@ -74,8 +74,15 @@ local function getBrainrotName(instance)
 	return instance:GetAttribute("BrainrotName") or instance:GetAttribute("DisplayName") or instance.Name
 end
 
-local function getRealCount(instance)
-	return getCountFromAttributes(instance) or getCountFromValueObject(instance) or 1
+local function getRealCount(instance, mutationName)
+	local count = getCountFromAttributes(instance) or getCountFromValueObject(instance)
+
+	if count ~= nil then
+		return count
+	end
+
+	warn(("Missing Count for %s/%s; counting this object as 1."):format(mutationName, instance.Name))
+	return 1
 end
 
 local function addBrainrotCount(countsByName, brainrotName, mutationName, amount)
@@ -97,9 +104,11 @@ local function collectBrainrotCounts()
 	local countsByName = {}
 
 	if not root then
-		warn("No Brainrots folder found in ServerStorage or ReplicatedStorage.")
+		warn("No Brainrots folder found in ReplicatedStorage or ServerStorage.")
 		return {}
 	end
+
+	print("Reading Brainrot counts from:", root:GetFullName())
 
 	for _, mutationFolder in ipairs(root:GetChildren()) do
 		if mutationFolder:IsA("Folder") then
@@ -107,7 +116,7 @@ local function collectBrainrotCounts()
 
 			for _, brainrotInstance in ipairs(mutationFolder:GetChildren()) do
 				local brainrotName = getBrainrotName(brainrotInstance)
-				local amount = getRealCount(brainrotInstance)
+				local amount = getRealCount(brainrotInstance, mutationName)
 
 				addBrainrotCount(countsByName, brainrotName, mutationName, amount)
 			end
@@ -127,6 +136,8 @@ local function sendCounts()
 	local payload = {
 		brainrots = collectBrainrotCounts(),
 	}
+
+	print(("Sending %d Brainrot count rows to website."):format(#payload.brainrots))
 
 	local success, response = pcall(function()
 		return HttpService:RequestAsync({
