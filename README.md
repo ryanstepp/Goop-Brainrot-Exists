@@ -118,11 +118,48 @@ ReplicatedStorage
     └── Radioactive
 ```
 
-The Lua script also checks `ServerStorage.Brainrots` if `ReplicatedStorage.Brainrots` does not exist.
+The Lua script checks `ServerStorage.Brainrots` first, then `ReplicatedStorage.Brainrots`.
+
+## Real Exist Count Storage
+
+The Roblox script can read real counts in any of these beginner-friendly layouts.
+
+One object per existing Brainrot:
+
+```text
+ServerStorage
+└── Brainrots
+    └── Gold
+        ├── 67
+        ├── 67
+        └── Goop Kid
+```
+
+One value object per Brainrot:
+
+```text
+ServerStorage
+└── Brainrots
+    └── Gold
+        ├── 67 (IntValue, Value = 120)
+        └── Goop Kid (IntValue, Value = 80)
+```
+
+One folder/model per Brainrot with a count value:
+
+```text
+ServerStorage
+└── Brainrots
+    └── Gold
+        └── 67
+            └── Count (IntValue, Value = 120)
+```
+
+Or set an attribute named `Count`, `ExistCount`, `Exists`, `Total`, or `Amount` on the Brainrot object.
 
 ## Add More Brainrots Or Mutations
 
-Add new mutation folders in Roblox and include their names in `MUTATION_FOLDER_NAMES` inside `roblox/SendBrainrotCounts.server.lua`.
+Add new mutation folders in Roblox under `Brainrots`. The Lua script finds mutation folders automatically.
 
 The website automatically shows any mutation keys that the backend receives:
 
