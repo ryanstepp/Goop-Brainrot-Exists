@@ -30,6 +30,8 @@ VITE_API_BASE_URL=http://localhost:3001
 
 The Roblox script must use the same secret in its `API_KEY` variable.
 
+On Render, do not set `VITE_API_BASE_URL` unless you set it to your deployed site URL. The frontend can use same-domain API calls automatically.
+
 ## Run The Backend
 
 ```bash

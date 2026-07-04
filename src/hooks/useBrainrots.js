@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001';
+const configuredApiUrl = import.meta.env.VITE_API_BASE_URL || '';
+const API_BASE_URL =
+  import.meta.env.PROD && configuredApiUrl.includes('localhost') ? '' : configuredApiUrl;
 
 export function useBrainrots() {
   const [brainrots, setBrainrots] = useState([]);
